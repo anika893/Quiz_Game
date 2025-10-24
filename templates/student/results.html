@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}Quiz Results - Quiz Pool App{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="result-card">
+                <div class="mb-4">
+                    <i class="fas fa-trophy fa-3x text-warning mb-3"></i>
+                    <h2 class="mb-3">Quiz Completed!</h2>
+                    <div class="score-display">{{ quiz_results.score }}/{{ quiz_results.total }}</div>
+                    <p class="text-muted mb-4">
+                        <i class="fas fa-clock me-2"></i>
+                        Time taken: {{ quiz_results.elapsed }} seconds
+                    </p>
+                </div>
+                
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Quiz:</strong> {{ quiz_results.subject }}
+                    <br><strong>Teacher:</strong> {{ quiz_results.teacher_name }}
+                    {% if quiz_results.timer_minutes > 0 %}
+                        <br><strong>Time Limit:</strong> {{ quiz_results.timer_minutes }} minutes
+                    {% endif %}
+                    {% if quiz_results.negative_marking %}
+                        <br><strong>Scoring:</strong> +1 for correct, -0.25 for wrong answers
+                    {% endif %}
+                    {% if quiz_results.auto_submitted %}
+                        <br><strong class="text-warning">⚠️ Auto-submitted due to time limit!</strong>
+                    {% endif %}
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card border-0 bg-light">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Final Score</h5>
+                                <h3 class="text-primary">{{ quiz_results.score }}/{{ quiz_results.total }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-0 bg-light">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Percentage</h5>
+                                <h3 class="text-success">{{ quiz_results.percentage }}%</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-0 bg-light">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Grade</h5>
+                                <h3 class="text-info">
+                                    {% if quiz_results.percentage >= 90 %}A+
+                                    {% elif quiz_results.percentage >= 80 %}A
+                                    {% elif quiz_results.percentage >= 70 %}B
+                                    {% elif quiz_results.percentage >= 60 %}C
+                                    {% elif quiz_results.percentage >= 50 %}D
+                                    {% else %}F
+                                    {% endif %}
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-0 bg-light">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Time Taken</h5>
+                                <h3 class="text-warning">{{ quiz_results.elapsed }}s</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Detailed Scoring Breakdown -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card border-success">
+                            <div class="card-body text-center">
+                                <h5 class="card-title text-success">Correct Answers</h5>
+                                <h3 class="text-success">{{ quiz_results.correct_answers | default(0) }}</h3>
+                                <small class="text-muted">+1 point each</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-danger">
+                            <div class="card-body text-center">
+                                <h5 class="card-title text-danger">Wrong Answers</h5>
+                                <h3 class="text-danger">{{ quiz_results.wrong_answers | default(0) }}</h3>
+                                <small class="text-muted">-0.25 points each</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-secondary">
+                            <div class="card-body text-center">
+                                <h5 class="card-title text-secondary">Unanswered</h5>
+                                <h3 class="text-secondary">{{ quiz_results.unanswered | default(0) }}</h3>
+                                <small class="text-muted">0 points</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Score Calculation -->
+                <div class="alert alert-info" role="alert">
+                    <h6><i class="fas fa-calculator me-2"></i>Score Calculation:</h6>
+                    <p class="mb-0">
+                        <strong>Final Score = Correct Answers - (Wrong Answers × 0.25)</strong><br>
+                        <span class="text-muted">
+                            {{ quiz_results.correct_answers | default(0) }} - ({{ quiz_results.wrong_answers | default(0) }} × 0.25) = 
+                            {{ quiz_results.correct_answers | default(0) }} - {{ (quiz_results.wrong_answers | default(0)) * 0.25 }} = 
+                            <strong>{{ quiz_results.score }}</strong>
+                        </span>
+                    </p>
+                </div>
+                
+                {% if quiz_results.details %}
+                    <div class="mb-4">
+                        <h4 class="mb-3">
+                            <i class="fas fa-list me-2"></i>
+                            Answer Review
+                        </h4>
+                        
+                        {% for detail in quiz_results.details %}
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h6 class="card-title mb-0">
+                                            <i class="fas fa-question-circle me-2"></i>
+                                            Question {{ loop.index }}
+                                        </h6>
+                                        <span class="badge {% if detail.is_correct %}bg-success{% else %}bg-danger{% endif %}">
+                                            {% if detail.is_correct %}
+                                                <i class="fas fa-check me-1"></i>Correct (+{{ detail.points }})
+                                            {% else %}
+                                                <i class="fas fa-times me-1"></i>Wrong ({{ detail.points }})
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                    <p class="card-text mb-2">{{ detail.question }}</p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="mb-1">
+                                                <i class="fas fa-user me-2"></i>
+                                                <strong>Your Answer:</strong> {{ detail.student_answer }}
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="mb-1">
+                                                <i class="fas fa-check-circle me-2"></i>
+                                                <strong>Correct Answer:</strong> {{ detail.correct_answer }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                <div class="d-flex gap-3 justify-content-center">
+                    <a href="{{ url_for('student.download_pdf') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-download me-2"></i>Download PDF Report
+                    </a>
+                    <a href="{{ url_for('student.dashboard') }}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

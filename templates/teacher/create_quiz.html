@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Create Quiz - Quiz Pool App{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-plus me-2"></i>Create New Quiz
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    {% if table_exists %}
+                        <div class="alert alert-warning" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            A quiz with this name already exists. Would you like to overwrite it?
+                        </div>
+                    {% endif %}
+                    
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">
+                                <i class="fas fa-book me-2"></i>Quiz Subject
+                            </label>
+                            <input type="text" class="form-control form-control-lg" id="subject" name="subject" 
+                                   value="{{ subject if subject else '' }}" required 
+                                   placeholder="e.g., Mathematics, Science, History">
+                            <div class="form-text">Enter a descriptive name for your quiz subject.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="timer_minutes" class="form-label">
+                                <i class="fas fa-clock me-2"></i>Quiz Timer (Optional)
+                            </label>
+                            <select class="form-select form-select-lg" id="timer_minutes" name="timer_minutes">
+                                <option value="0">No Timer</option>
+                                <option value="5">5 Minutes</option>
+                                <option value="10">10 Minutes</option>
+                                <option value="15">15 Minutes</option>
+                                <option value="20">20 Minutes</option>
+                                <option value="30">30 Minutes</option>
+                                <option value="45">45 Minutes</option>
+                                <option value="60">60 Minutes</option>
+                            </select>
+                            <div class="form-text">Set a time limit for students to complete the quiz.</div>
+                        </div>
+                        
+                        <div class="alert alert-info" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Quiz Settings:</strong> 
+                            <ul class="mb-0 mt-2">
+                                <li>Negative marking is enabled by default (0.25 marks deducted for wrong answers)</li>
+                                <li>Timer is optional - students will see countdown if set</li>
+                                <li>All quizzes are saved in your personal folder</li>
+                            </ul>
+                        </div>
+                        
+                        {% if table_exists %}
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="overwrite" name="overwrite" value="yes">
+                                    <label class="form-check-label" for="overwrite">
+                                        <strong>Yes, overwrite the existing quiz</strong>
+                                    </label>
+                                </div>
+                                <div class="form-text text-danger">
+                                    <i class="fas fa-warning me-1"></i>
+                                    This will permanently delete all existing questions in the current quiz.
+                                </div>
+                            </div>
+                        {% endif %}
+                        
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-plus me-2"></i>Create Quiz
+                            </button>
+                            <a href="{{ url_for('teacher.dashboard') }}" class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Select Teacher - Quiz Pool App{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-chalkboard-teacher me-2"></i>Select Your Teacher
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-muted mb-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Choose your teacher to see their available quizzes. You can only take quizzes from the selected teacher.
+                    </p>
+                    
+                    {% if teachers %}
+                        <form method="POST">
+                            <div class="mb-3">
+                                <label for="teacher_id" class="form-label">
+                                    <i class="fas fa-user me-2"></i>Select Teacher
+                                </label>
+                                <select class="form-select form-select-lg" id="teacher_id" name="teacher_id" required>
+                                    <option value="">Choose your teacher...</option>
+                                    {% for teacher in teachers %}
+                                        <option value="{{ teacher.teacher_id }}">{{ teacher.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="form-text">Select the teacher whose quizzes you want to take.</div>
+                            </div>
+                            
+                            <div class="alert alert-warning" role="alert">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                <strong>Note:</strong> Once you select a teacher, you can only access their quizzes. 
+                                To change teachers, you'll need to logout and login again.
+                            </div>
+                            
+                            <div class="d-flex gap-3">
+                                <button type="submit" class="btn btn-info btn-lg">
+                                    <i class="fas fa-check me-2"></i>Select Teacher
+                                </button>
+                                <a href="{{ url_for('student.details') }}" class="btn btn-outline-secondary btn-lg">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to Details
+                                </a>
+                            </div>
+                        </form>
+                    {% else %}
+                        <div class="alert alert-warning" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>No Teachers Available</strong><br>
+                            There are currently no registered teachers in the system. 
+                            Please contact your administrator or try again later.
+                        </div>
+                        
+                        <div class="text-center">
+                            <a href="{{ url_for('student.details') }}" class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Details
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

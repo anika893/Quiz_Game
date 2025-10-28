@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Quiz Pool App{% endblock %}
+
+{% block content %}
+<div class="hero-section bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    <i class="fas fa-graduation-cap me-3"></i>
+                    Welcome to Quiz Pool App
+                </h1>
+                <p class="lead mb-4">
+                    An interactive learning platform designed for teachers and students. 
+                    Create, manage, and take quizzes with ease.
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="{{ url_for('teacher.login') }}" class="btn btn-light btn-lg">
+                        <i class="fas fa-chalkboard-teacher me-2"></i>Teacher Login
+                    </a>
+                    <a href="{{ url_for('student.details') }}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-user-graduate me-2"></i>Student Portal
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <i class="fas fa-brain display-1 opacity-75"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center p-4">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-chalkboard-teacher fa-2x"></i>
+                    </div>
+                    <h4 class="card-title">For Teachers</h4>
+                    <p class="card-text text-muted">
+                        Create and manage quizzes easily. Add questions, track student progress, 
+                        and generate detailed reports.
+                    </p>
+                    <ul class="list-unstyled text-start">
+                        <li><i class="fas fa-check text-success me-2"></i>Create unlimited quizzes</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Manage questions and answers</li>
+                        <li><i class="fas fa-check text-success me-2"></i>View student results</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Generate PDF reports</li>
+                    </ul>
+                    <a href="{{ url_for('teacher.login') }}" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt me-2"></i>Teacher Login
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center p-4">
+                    <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-user-graduate fa-2x"></i>
+                    </div>
+                    <h4 class="card-title">For Students</h4>
+                    <p class="card-text text-muted">
+                        Take quizzes, track your progress, and download your results. 
+                        Learn at your own pace with instant feedback.
+                    </p>
+                    <ul class="list-unstyled text-start">
+                        <li><i class="fas fa-check text-success me-2"></i>Take interactive quizzes</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Instant score feedback</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Review incorrect answers</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Download result PDFs</li>
+                    </ul>
+                    <a href="{{ url_for('student.details') }}" class="btn btn-success">
+                        <i class="fas fa-play me-2"></i>Start Quiz
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center p-4">
+                    <div class="bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-chart-line fa-2x"></i>
+                    </div>
+                    <h4 class="card-title">Features</h4>
+                    <p class="card-text text-muted">
+                        Modern, responsive design with powerful features to enhance 
+                        the learning experience for both teachers and students.
+                    </p>
+                    <ul class="list-unstyled text-start">
+                        <li><i class="fas fa-check text-success me-2"></i>Responsive design</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Real-time timer</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Database integration</li>
+                        <li><i class="fas fa-check text-success me-2"></i>PDF report generation</li>
+                    </ul>
+                    <a href="{{ url_for('about') }}" class="btn btn-info">
+                        <i class="fas fa-info-circle me-2"></i>Learn More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="mb-4">Ready to Get Started?</h2>
+                <p class="lead text-muted mb-4">
+                    Join thousands of teachers and students who are already using Quiz Pool App 
+                    to enhance their learning experience.
+                </p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{{ url_for('teacher.login') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-chalkboard-teacher me-2"></i>Teacher Login
+                    </a>
+                    <a href="{{ url_for('student.details') }}" class="btn btn-success btn-lg">
+                        <i class="fas fa-user-graduate me-2"></i>Student Portal
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

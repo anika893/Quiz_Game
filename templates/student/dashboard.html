@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard - Quiz Pool App{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2><i class="fas fa-user-graduate me-2"></i>Student Dashboard</h2>
+                    <p class="text-muted mb-0">
+                        Welcome, <strong>{{ student_details.name }}</strong>! 
+                        ({{ student_details.student_id }})
+                    </p>
+                </div>
+                <a href="{{ url_for('student.logout') }}" class="btn btn-outline-danger">
+                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </a>
+            </div>
+            
+            {% if selected_teacher %}
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-chalkboard-teacher me-2"></i>
+                    <strong>Selected Teacher:</strong> {{ selected_teacher.name }}
+                    <br><small>You can only access quizzes created by this teacher.</small>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-user-circle me-2"></i>Student Information
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <strong>Name:</strong> {{ student_details.name }}
+                        </div>
+                        <div class="col-md-3">
+                            <strong>ID:</strong> {{ student_details.student_id }}
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Section:</strong> {{ student_details.section }}
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Intake:</strong> {{ student_details.intake }}
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <strong>University:</strong> {{ student_details.university }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% if quizzes %}
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mb-3">
+                    <i class="fas fa-list me-2"></i>Available Quizzes
+                </h4>
+            </div>
+        </div>
+        
+        <div class="row">
+            {% for quiz in quizzes %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm border-0 quiz-card">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-book fa-lg"></i>
+                            </div>
+                            <h5 class="card-title">{{ quiz.name }}</h5>
+                            <p class="card-text text-muted">
+                                <i class="fas fa-clock me-2"></i>
+                                Timer: {{ quiz.timer_minutes }} minutes
+                                {% if quiz.negative_marking %}
+                                    <br><i class="fas fa-exclamation-triangle me-2"></i>
+                                    Negative Marking: 0.25 deduction
+                                {% endif %}
+                            </p>
+                            <a href="{{ url_for('student.take_quiz', table_name=quiz.table_name) }}" 
+                               class="btn btn-primary">
+                                <i class="fas fa-play me-2"></i>Take Quiz
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body text-center p-5">
+                        <i class="fas fa-book-open fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">No Quizzes Available</h4>
+                        <p class="text-muted">
+                            There are currently no quizzes available. 
+                            Please check back later or contact your teacher.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+.quiz-card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.quiz-card:hover {
+    transform: translateY(-5px);
+}
+</style>
+{% endblock %}
